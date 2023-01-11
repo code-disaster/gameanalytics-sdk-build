@@ -31,6 +31,11 @@ file(
         "${DEPENDENCIES_DIR}/stackwalker/*.cpp"
 )
 
+file(
+        GLOB_RECURSE CPP_SOURCES_OSX
+        "${GA_SOURCE_DIR}/*.mm"
+)
+
 #
 # We only care about building *some* shared libraries.
 #
@@ -116,6 +121,34 @@ if (UNIX AND NOT APPLE)
             $<$<CXX_COMPILER_ID:Clang>:-Wno-implicit-const-int-float-conversion>
     )
     #set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+endif ()
+
+if (UNIX AND APPLE)
+    target_sources(
+            GameAnalytics
+            PRIVATE
+            ${CPP_SOURCES_OSX}
+    )
+    target_compile_definitions(
+            GameAnalytics
+            PUBLIC
+            UID_CFUUID
+            OSX
+    )
+    target_include_directories(
+            GameAnalytics
+            PRIVATE
+            "${DEPENDENCIES_DIR}/openssl/1.1.1d/include"
+    )
+    target_link_libraries(
+            GameAnalytics
+            ${DEPENDENCIES_DIR}/openssl/1.1.1d/libs/osx/libcrypto.a
+            ${DEPENDENCIES_DIR}/openssl/1.1.1d/libs/osx/libssl.a
+            ${DEPENDENCIES_DIR}/curl/lib/osx/libcurl.a
+            "-framework CoreFoundation"
+            "-framework Foundation"
+            "-framework CoreServices"
+    )
 endif ()
 
 target_include_directories(
