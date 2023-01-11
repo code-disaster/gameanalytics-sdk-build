@@ -5,6 +5,7 @@ project(GameAnalytics)
 set(GA_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/GA-SDK-CPP/source/gameanalytics")
 set(DEPENDENCIES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/GA-SDK-CPP/source/dependencies")
 
+add_definitions("-DGA_SHARED_LIB")
 add_definitions("-DGUID_WINDOWS")
 add_definitions("-DCRYPTOPP_DISABLE_ASM")
 add_definitions("-DUSE_OPENSSL -DCURL_STATICLIB")
