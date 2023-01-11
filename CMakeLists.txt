@@ -112,8 +112,8 @@ if (UNIX AND NOT APPLE)
     target_compile_options(
             GameAnalytics
             PRIVATE
-            -Wno-unused-result
-            -Wno-format-truncation
+            $<$<CXX_COMPILER_ID:Gnu>:-Wno-unused-result;-Wno-format-truncation>
+            $<$<CXX_COMPILER_ID:Clang>:-Wno-implicit-const-int-float-conversion>
     )
     #set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 endif ()
