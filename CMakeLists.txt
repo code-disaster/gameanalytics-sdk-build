@@ -2,6 +2,9 @@ cmake_minimum_required(VERSION 3.21)
 
 project(GameAnalytics)
 
+set(CMAKE_CXX_STANDARD 11)
+set(CXX_STANDARD_REQUIRED)
+
 set(GA_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/GA-SDK-CPP/source/gameanalytics")
 set(DEPENDENCIES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/GA-SDK-CPP/source/dependencies")
 
@@ -132,7 +135,7 @@ if (UNIX AND APPLE)
     target_compile_definitions(
             GameAnalytics
             PUBLIC
-            UID_CFUUID
+            GUID_CFUUID
             OSX
     )
     target_include_directories(
@@ -148,6 +151,11 @@ if (UNIX AND APPLE)
             "-framework CoreFoundation"
             "-framework Foundation"
             "-framework CoreServices"
+    )
+    target_compile_options(
+            GameAnalytics
+            PRIVATE
+            -Wno-deprecated-declarations
     )
 endif ()
 
