@@ -87,6 +87,7 @@ if (WIN32)
             ${DEPENDENCIES_DIR}/openssl/1.1.1d/libs/win64/vc140_x64_release/ssleay32.lib
             ${DEPENDENCIES_DIR}/curl/lib/win64/vc140_x64_release/libcurl.lib
     )
+    target_compile_options(GameAnalytics PRIVATE /wd4838 /wd4858)
 endif ()
 
 if (UNIX AND NOT APPLE)
