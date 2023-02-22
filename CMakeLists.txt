@@ -46,6 +46,11 @@ file(
 )
 
 file(
+        GLOB_RECURSE CPP_SOURCES_LINUX
+        "${DEPENDENCIES_DIR}/stacktrace/call_stack_gcc.cpp"
+)
+
+file(
         GLOB_RECURSE CPP_SOURCES_OSX
         "${GA_SOURCE_DIR}/*.mm"
         "${DEPENDENCIES_DIR}/stacktrace/call_stack_gcc.cpp"
@@ -116,6 +121,11 @@ if (WIN32)
 endif ()
 
 if (UNIX AND NOT APPLE)
+    target_sources(
+            GameAnalytics
+            PRIVATE
+            ${CPP_SOURCES_LINUX}
+    )
     target_compile_definitions(
             GameAnalytics
             PUBLIC
@@ -125,7 +135,7 @@ if (UNIX AND NOT APPLE)
     target_include_directories(
             GameAnalytics
             PRIVATE
-            #"${DEPENDENCIES_DIR}/ooid"
+            "${DEPENDENCIES_DIR}/ooid"
             "${DEPENDENCIES_DIR}/openssl/1.1.1d/include"
     )
     target_link_libraries(
@@ -140,7 +150,8 @@ if (UNIX AND NOT APPLE)
             $<$<CXX_COMPILER_ID:GNU>:-Wno-unused-result;-Wno-format-truncation>
             $<$<CXX_COMPILER_ID:Clang>:-Wno-implicit-const-int-float-conversion>
     )
-    #set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+    set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+    set_target_properties(GameAnalytics PROPERTIES COMPILE_FLAGS "${TARGET_ARCH}" LINK_FLAGS "${TARGET_ARCH}")
 endif ()
 
 if (UNIX AND APPLE)
