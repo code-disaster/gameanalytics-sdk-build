@@ -19,7 +19,6 @@ file(
         "${GA_SOURCE_DIR}/GAHTTPApi.cpp"
         "${GA_SOURCE_DIR}/GALogger.cpp"
         "${GA_SOURCE_DIR}/GameAnalytics.cpp"
-        #"${GA_SOURCE_DIR}/GameAnalyticsExtern.cpp"
         "${GA_SOURCE_DIR}/GAState.cpp"
         "${GA_SOURCE_DIR}/GAStore.cpp"
         "${GA_SOURCE_DIR}/GAThreading.cpp"
@@ -41,6 +40,7 @@ file(
 
 file(
         GLOB_RECURSE CPP_SOURCES_WIN32
+        "${GA_SOURCE_DIR}/GameAnalyticsExtern.cpp"
         "${DEPENDENCIES_DIR}/stacktrace/call_stack_msvc.cpp"
         "${DEPENDENCIES_DIR}/stackwalker/*.cpp"
 )
@@ -54,7 +54,12 @@ file(
 #
 # We only care about building *some* shared libraries.
 #
-add_library(GameAnalytics STATIC)
+if (WIN32)
+        set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
+        add_library(GameAnalytics SHARED)
+else ()
+        add_library(GameAnalytics STATIC)
+endif ()
 
 target_sources(
         GameAnalytics
@@ -65,7 +70,6 @@ target_sources(
 target_compile_definitions(
         GameAnalytics
         PUBLIC
-        #GA_SHARED_LIB
         CRYPTOPP_DISABLE_ASM
         USE_OPENSSL
         CURL_STATICLIB
@@ -94,6 +98,7 @@ if (WIN32)
             GameAnalytics
             PUBLIC
             GUID_WINDOWS
+            GA_SHARED_LIB
     )
     target_include_directories(
             GameAnalytics
