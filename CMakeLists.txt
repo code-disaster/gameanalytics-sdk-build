@@ -14,11 +14,21 @@ set(DEPENDENCIES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/GA-SDK-CPP/source/dependencies
 file(
         GLOB_RECURSE CPP_SOURCES
 
-        "${GA_SOURCE_DIR}/*.cpp"
+        "${GA_SOURCE_DIR}/GADevice.cpp"
+        "${GA_SOURCE_DIR}/GAEvents.cpp"
+        "${GA_SOURCE_DIR}/GAHTTPApi.cpp"
+        "${GA_SOURCE_DIR}/GALogger.cpp"
+        "${GA_SOURCE_DIR}/GameAnalytics.cpp"
+        #"${GA_SOURCE_DIR}/GameAnalyticsExtern.cpp"
+        "${GA_SOURCE_DIR}/GAState.cpp"
+        "${GA_SOURCE_DIR}/GAStore.cpp"
+        "${GA_SOURCE_DIR}/GAThreading.cpp"
+        "${GA_SOURCE_DIR}/GAUncaughtExceptionHandler.cpp"
+        "${GA_SOURCE_DIR}/GAUtilities.cpp"
+        "${GA_SOURCE_DIR}/GAValidator.cpp"
         "${GA_SOURCE_DIR}/*.h"
 
         "${DEPENDENCIES_DIR}/crossguid/*.cpp"
-        "${DEPENDENCIES_DIR}/stacktrace/*.cpp"
         "${DEPENDENCIES_DIR}/stacktrace/*.hpp"
         "${DEPENDENCIES_DIR}/sqlite/*.c"
         "${DEPENDENCIES_DIR}/sqlite/*.h"
@@ -31,18 +41,20 @@ file(
 
 file(
         GLOB_RECURSE CPP_SOURCES_WIN32
+        "${DEPENDENCIES_DIR}/stacktrace/call_stack_msvc.cpp"
         "${DEPENDENCIES_DIR}/stackwalker/*.cpp"
 )
 
 file(
         GLOB_RECURSE CPP_SOURCES_OSX
         "${GA_SOURCE_DIR}/*.mm"
+        "${DEPENDENCIES_DIR}/stacktrace/call_stack_gcc.cpp"
 )
 
 #
 # We only care about building *some* shared libraries.
 #
-add_library(GameAnalytics SHARED)
+add_library(GameAnalytics STATIC)
 
 target_sources(
         GameAnalytics
@@ -53,7 +65,7 @@ target_sources(
 target_compile_definitions(
         GameAnalytics
         PUBLIC
-        GA_SHARED_LIB
+        #GA_SHARED_LIB
         CRYPTOPP_DISABLE_ASM
         USE_OPENSSL
         CURL_STATICLIB
