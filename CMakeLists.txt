@@ -5,6 +5,11 @@ project(GameAnalytics)
 set(CMAKE_CXX_STANDARD 11)
 set(CXX_STANDARD_REQUIRED)
 
+if (APPLE)
+        set(CMAKE_INSTALL_NAME_DIR "@loader_path")
+        set(CMAKE_BUILD_WITH_INSTALL_NAME_DIR ON)
+endif ()
+
 set(GA_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/GA-SDK-CPP/source/gameanalytics")
 set(DEPENDENCIES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/GA-SDK-CPP/source/dependencies")
 
@@ -61,9 +66,12 @@ file(
 #
 if (WIN32)
         set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
-        add_library(GameAnalytics SHARED)
-else ()
+endif ()
+
+if (UNIX AND NOT APPLE)
         add_library(GameAnalytics STATIC)
+else ()
+        add_library(GameAnalytics SHARED)
 endif ()
 
 target_sources(

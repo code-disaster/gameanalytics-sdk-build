@@ -16,6 +16,6 @@ cmake --build .
 
 ```
 mkdir build && cd build
-cmake -G Ninja -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" -DCMAKE_BUILD_TYPE=Release ..
+cmake -G Ninja -DCMAKE_OSX_DEPLOYMENT_TARGET=10.14 -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" -DCMAKE_BUILD_TYPE=Release ..
 cmake --build .
 ```
